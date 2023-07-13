@@ -1,8 +1,0 @@
-prefix=/home/crp/dynamics_ws/install
-
-Name: dynamics
-Description: Description of dynamics
-Version: 0.0.0
-Cflags: -I${prefix}/include
-Libs: -L${prefix}/lib -ldynamics
-Requires: 
