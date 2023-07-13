@@ -1,0 +1,8 @@
+prefix=/home/crp/dynamics_ws/install
+
+Name: show_model
+Description: Description of show_model
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: roscpp visualization_msgs

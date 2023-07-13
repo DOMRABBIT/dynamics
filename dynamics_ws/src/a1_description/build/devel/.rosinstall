@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/crp/unitree_ros-master/robots/a1_description/build/devel/setup.sh
