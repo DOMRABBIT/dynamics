@@ -1,4 +1,4 @@
-prefix=/home/crp/dynamics_ws/devel
+prefix=/home/crp/git/dynamics_ws/devel
 
 Name: jaka
 Description: Description of jaka

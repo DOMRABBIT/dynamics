@@ -64,6 +64,7 @@ public:
         I = (Eigen::Matrix<double, 6, 6> *)malloc(sizeof(Eigen::Matrix<double, 6, 6>) * NB);
         parent = (int *)malloc(sizeof(int) * NB);
         Xtree = (Eigen::Matrix<double, 6, 6> *)malloc(sizeof(Eigen::Matrix<double, 6, 6>) * NB);
+        X_uptree = (Eigen::Matrix<double, 6, 6> *)malloc(sizeof(Eigen::Matrix<double, 6, 6>) * NB);
         Xj = (Eigen::Matrix<double, 6, 6> *)malloc(sizeof(Eigen::Matrix<double, 6, 6>) * NB);
         Xq = (Eigen::Matrix<double, 6, 6> *)malloc(sizeof(Eigen::Matrix<double, 6, 6>) * NB);
         Ttree = (Eigen::Matrix<double, 4, 4> *)malloc(sizeof(Eigen::Matrix<double, 4, 4>) * NB);
@@ -105,6 +106,7 @@ public:
     Eigen::Matrix<double,6,6> *I;
     int *parent;
     Eigen::Matrix<double, 6, 6> *Xtree; // body(i) coordinate respect to body(i-1) coordinate
+    Eigen::Matrix<double, 6, 6> *X_uptree; // body(i) coordinate respect to body(i-1) coordinate
     Eigen::Matrix<double, 6, 6> *Xj;    // joint(i) coordinate respect to body(i-1) coordinate
     Eigen::Matrix<double, 6, 6> *Xq;    // body(i) coordinte respect to joint(i) coordinte
     Eigen::Matrix<double, 4, 4> *Ttree; // body(i) coordinate respect to body(i-1) coordinate
@@ -115,6 +117,7 @@ public:
     Joint joint_Flt;
     Eigen::Matrix<double, 6, 6> I_base;
     Eigen::Matrix<double, 6, 6> X_Flt;
+    Eigen::Matrix<double, 6, 6> X_upFlt;
     Eigen::Matrix<double, 6, 6> Xj_Flt;
     Eigen::Matrix<double, 6, 6> Xq_Flt;
     Eigen::Matrix<double, 4, 4> T_Flt;

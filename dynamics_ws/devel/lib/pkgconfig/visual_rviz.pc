@@ -1,8 +1,8 @@
-prefix=/home/crp/dynamics_ws/devel
+prefix=/home/crp/git/dynamics_ws/devel
 
 Name: visual_rviz
 Description: Description of visual_rviz
 Version: 0.0.0
-Cflags: -I/home/crp/dynamics_ws/src/visual_rviz/include
+Cflags: -I/home/crp/git/dynamics_ws/src/visual_rviz/include
 Libs: -L${prefix}/lib 
 Requires: 
