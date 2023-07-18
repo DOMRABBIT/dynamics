@@ -1,2 +1,0 @@
-a1_description:dynamics:gazebo_sim:jaka:show_model:visual_rviz
--DCATKIN_DEVEL_PREFIX=/home/crp/git/dynamics_ws/devel -DCMAKE_INSTALL_PREFIX=/home/crp/git/dynamics_ws/install -G Unix Makefiles
