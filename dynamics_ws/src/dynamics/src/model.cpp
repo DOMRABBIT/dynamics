@@ -283,9 +283,9 @@ void Model::build_a1(Model &a1)
     R = a1.T_Flt.block(0, 0, 3, 3);
     xyz = a1.T_Flt.block(0, 3, 3, 1);
     AdjointT(R, xyz, a1.X_Flt);
-    R = R.transpose();
-    xyz = -R * xyz;
-    AdjointT(R, xyz, a1.X_upFlt); 
+    
+    xyz = (-R) * xyz;
+    AdjointT(R.transpose(), xyz, a1.X_upFlt);
 
     // Link_floating
     a1.link_Flt.mass = 6.0;
@@ -309,9 +309,9 @@ void Model::build_a1(Model &a1)
     R = a1.Ttree[0].block(0, 0, 3, 3);
     xyz = a1.Ttree[0].block(0, 3, 3, 1);
     AdjointT(R, xyz, a1.Xtree[0]);
-    R = R.transpose();
+   
     xyz = -R * xyz;
-    AdjointT(R, xyz, a1.X_uptree[0]);
+    AdjointT(R.transpose(), xyz, a1.X_uptree[0]);
 
     // Link0
     a1.link[0].mass = 0.696;
@@ -335,9 +335,9 @@ void Model::build_a1(Model &a1)
     R = a1.Ttree[1].block(0, 0, 3, 3);
     xyz = a1.Ttree[1].block(0, 3, 3, 1);
     AdjointT(R, xyz, a1.Xtree[1]);
-    R = R.transpose();
+    
     xyz = -R * xyz;
-    AdjointT(R, xyz, a1.X_uptree[1]);
+    AdjointT(R.transpose(), xyz, a1.X_uptree[1]);
 
     // Link1
     a1.link[1].mass = 1.013;
@@ -362,9 +362,9 @@ void Model::build_a1(Model &a1)
     R = a1.Ttree[2].block(0, 0, 3, 3);
     xyz = a1.Ttree[2].block(0, 3, 3, 1);
     AdjointT(R, xyz, a1.Xtree[2]);
-    R = R.transpose();
+
     xyz = -R * xyz;
-    AdjointT(R, xyz, a1.X_uptree[2]);
+    AdjointT(R.transpose(), xyz, a1.X_uptree[2]);
 
     // Link2
     a1.link[2].mass = 0.226;
@@ -389,9 +389,9 @@ void Model::build_a1(Model &a1)
     R = a1.Ttree[3].block(0, 0, 3, 3);
     xyz = a1.Ttree[3].block(0, 3, 3, 1);
     AdjointT(R, xyz, a1.Xtree[3]);
-    R = R.transpose();
+    
     xyz = -R * xyz;
-    AdjointT(R, xyz, a1.X_uptree[3]);
+    AdjointT(R.transpose(), xyz, a1.X_uptree[3]);
 
     // Link3
     a1.link[3].mass = 0.696;
@@ -416,9 +416,9 @@ void Model::build_a1(Model &a1)
     R = a1.Ttree[4].block(0, 0, 3, 3);
     xyz = a1.Ttree[4].block(0, 3, 3, 1);
     AdjointT(R, xyz, a1.Xtree[4]);
-    R = R.transpose();
+    
     xyz = -R * xyz;
-    AdjointT(R, xyz, a1.X_uptree[4]);
+    AdjointT(R.transpose(), xyz, a1.X_uptree[4]);
 
     // Link4
     a1.link[4].mass = 1.013;
@@ -443,11 +443,11 @@ void Model::build_a1(Model &a1)
     R = a1.Ttree[5].block(0, 0, 3, 3);
     xyz = a1.Ttree[5].block(0, 3, 3, 1);
     AdjointT(R, xyz, a1.Xtree[5]);
-    R = R.transpose();
+    
     xyz = -R * xyz;
-    AdjointT(R, xyz, a1.X_uptree[5]);
+    AdjointT(R.transpose(), xyz, a1.X_uptree[5]);
 
-    // Link4
+    // Link5
     a1.link[5].mass = 0.226;
     a1.link[5].com << 0.006435, 0.0, -0.107388;
     a1.link[5].Ic << 0.002997972, 0.0, -0.000141163,
@@ -470,9 +470,9 @@ void Model::build_a1(Model &a1)
     R = a1.Ttree[6].block(0, 0, 3, 3);
     xyz = a1.Ttree[6].block(0, 3, 3, 1);
     AdjointT(R, xyz, a1.Xtree[6]);
-    R = R.transpose();
+    
     xyz = -R * xyz;
-    AdjointT(R, xyz, a1.X_uptree[6]);
+    AdjointT(R.transpose(), xyz, a1.X_uptree[6]);
 
     // Link6
     a1.link[6].mass = 0.696;
@@ -497,9 +497,9 @@ void Model::build_a1(Model &a1)
     R = a1.Ttree[7].block(0, 0, 3, 3);
     xyz = a1.Ttree[7].block(0, 3, 3, 1);
     AdjointT(R, xyz, a1.Xtree[7]);
-    R = R.transpose();
+    
     xyz = -R * xyz;
-    AdjointT(R, xyz, a1.X_uptree[7]);
+    AdjointT(R.transpose(), xyz, a1.X_uptree[7]);
 
     // Link7
     a1.link[7].mass = 1.013;
@@ -524,9 +524,9 @@ void Model::build_a1(Model &a1)
     R = a1.Ttree[8].block(0, 0, 3, 3);
     xyz = a1.Ttree[8].block(0, 3, 3, 1);
     AdjointT(R, xyz, a1.Xtree[8]);
-    R = R.transpose();
+    
     xyz = -R * xyz;
-    AdjointT(R, xyz, a1.X_uptree[8]);
+    AdjointT(R.transpose(), xyz, a1.X_uptree[8]);
 
     // Link8
     a1.link[8].mass = 0.226;
@@ -551,9 +551,9 @@ void Model::build_a1(Model &a1)
     R = a1.Ttree[9].block(0, 0, 3, 3);
     xyz = a1.Ttree[9].block(0, 3, 3, 1);
     AdjointT(R, xyz, a1.Xtree[9]);
-    R = R.transpose();
+    
     xyz = -R * xyz;
-    AdjointT(R, xyz, a1.X_uptree[9]);
+    AdjointT(R.transpose(), xyz, a1.X_uptree[9]);
 
     // Link9
     a1.link[9].mass = 0.696;
@@ -578,9 +578,9 @@ void Model::build_a1(Model &a1)
     R = a1.Ttree[10].block(0, 0, 3, 3);
     xyz = a1.Ttree[10].block(0, 3, 3, 1);
     AdjointT(R, xyz, a1.Xtree[10]);
-    R = R.transpose();
+    
     xyz = -R * xyz;
-    AdjointT(R, xyz, a1.X_uptree[10]);
+    AdjointT(R.transpose(), xyz, a1.X_uptree[10]);
 
     // Link10
     a1.link[10].mass = 1.013;
@@ -606,9 +606,9 @@ void Model::build_a1(Model &a1)
     R = a1.Ttree[11].block(0, 0, 3, 3);
     xyz = a1.Ttree[11].block(0, 3, 3, 1);
     AdjointT(R, xyz, a1.Xtree[11]);
-    R = R.transpose();
+    
     xyz = -R * xyz;
-    AdjointT(R, xyz, a1.X_uptree[11]);
+    AdjointT(R.transpose(), xyz, a1.X_uptree[11]);
 
     // Link11
     a1.link[11].mass = 0.226;

@@ -38,10 +38,6 @@ eigen3/Eigen/Dense
 math.h
 -
 
-/home/crp/git/dynamics_ws/src/dynamics/src/dynamic.cpp
-dynamic.h
-/home/crp/git/dynamics_ws/src/dynamics/src/dynamic.h
-
 /home/crp/git/dynamics_ws/src/dynamics/src/model.cpp
 ros/ros.h
 /home/crp/git/dynamics_ws/src/dynamics/src/ros/ros.h
@@ -49,10 +45,6 @@ CRPmodel.h
 /home/crp/git/dynamics_ws/src/dynamics/src/CRPmodel.h
 dynamic.h
 /home/crp/git/dynamics_ws/src/dynamics/src/dynamic.h
-
-/home/crp/git/dynamics_ws/src/dynamics/src/spatial.cpp
-spatial.h
-/home/crp/git/dynamics_ws/src/dynamics/src/spatial.h
 
 /opt/ros/noetic/include/geometry_msgs/Point.h
 string
