@@ -4,11 +4,11 @@
 # 忽略文件类型（例如所有的txt文件）
 # *.txt
 # 忽略目录（例如一个名为"logs"的目录）
-/build/
-/devel/
+build/
+devel/
 # 忽略特定目录下的所有文件和子目录（例如一个名为"temp"的目录）
-/build/*
-/devel/*
+build/*
+devel/*
 # 忽略特定目录及其子目录中的特定文件（例如忽略"logs"目录下的所有.log文件）
 # /logs/*.log
 
