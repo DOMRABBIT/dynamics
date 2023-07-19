@@ -4,8 +4,37 @@
 # 忽略文件类型（例如所有的txt文件）
 # *.txt
 # 忽略目录（例如一个名为"logs"的目录）
-/build/
+# /build/
 # 忽略特定目录下的所有文件和子目录（例如一个名为"temp"的目录）
-/build/*
+# /build/*
 # 忽略特定目录及其子目录中的特定文件（例如忽略"logs"目录下的所有.log文件）
 # /logs/*.log
+
+CMakeFiles/
+CMakeCache.txt
+*.a
+*.o
+*.so
+Makefile
+.project
+.idea/
+.cproject
+*~
+*.settings*
+*/doc/html/
+Doxyfile
+*.orig
+*.tag
+*.tmp
+*.swp
+__pycache__
+*.pyc
+*.pydevproject
+ocs2_core/test/cppad_cg/testCppADCG_generated/
+ocs2_ddp/test/ddp_test_generated/
+*.aux
+*.log
+*.out
+*.synctex.gz
+.vscode/
+runs/
