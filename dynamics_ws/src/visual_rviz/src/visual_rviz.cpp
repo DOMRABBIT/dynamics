@@ -9,15 +9,15 @@ int main(int argc, char *argv[])
     ros::NodeHandle n;
     ros::Rate r(1);
     ros::Publisher marker_pub = n.advertise<visualization_msgs::Marker>("visualization_marker", 1);
-    Model a1(12);           // a1有12个moving连杆
-    a1.build_a1(a1);     // 设置jaka机械臂的参数
+    Model jaka(6);           // a1有12个moving连杆
+    jaka.build_jaka(jaka);     // 设置jaka机械臂的参数
 
-    double q[12] = {0.5f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f};
-    //double q[6] = {0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
-    //jaka.update_model(jaka, q,nullptr);
+    //double q[12] = {0.5f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f};
+    double q[6] = {0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
+    jaka.update_model(jaka, q,nullptr);
     while (ros::ok())
     {
-       // show_model_in_rviz(jaka, marker_pub);
+        show_model_in_rviz(jaka, marker_pub);
         r.sleep();
     }
 
@@ -126,7 +126,7 @@ void show_model_in_rviz(Model &model, ros::Publisher &marker_pub)
 {
     ros::Rate r1(1000);
 
-    string frame = "base";
+    string frame = "base_link";
     Matrix3d R;
     Vector3d p;
     Matrix4d T_up;
