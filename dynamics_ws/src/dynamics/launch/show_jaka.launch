@@ -1,6 +1,0 @@
-<launch>
-    <!-- 启动 Rviz -->
-    <node pkg = "rviz" type = "rviz" name = "rviz" args = "-d $(find dynamics)/config/show_jaka.rviz"/>
-    <node pkg="dynamics" type="model" name="jaka" output="screen"/>
-
-</launch>

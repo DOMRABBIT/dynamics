@@ -1,8 +1,0 @@
-prefix=/home/crp/git/dynamics_ws/devel
-
-Name: jaka
-Description: Description of jaka
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

@@ -1,8 +1,0 @@
-prefix=/home/crp/dynamics_ws/devel
-
-Name: RPdynamics
-Description: Description of RPdynamics
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

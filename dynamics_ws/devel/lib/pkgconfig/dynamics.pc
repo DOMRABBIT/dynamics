@@ -1,8 +1,0 @@
-prefix=/home/crp/git/dynamics_ws/devel
-
-Name: dynamics
-Description: Description of dynamics
-Version: 0.0.0
-Cflags: -I/home/crp/git/dynamics_ws/src/dynamics/include
-Libs: -L${prefix}/lib -ldynamics
-Requires: 

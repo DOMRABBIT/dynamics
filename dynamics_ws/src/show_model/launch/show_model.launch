@@ -1,7 +1,0 @@
-<launch>
-
-    <!-- 启动 Rviz -->
-    <node pkg = "rviz" type = "rviz" name = "rviz" args = "-d $(find show_model)/config/show_model.rviz"/>
-    <node pkg="show_model" type="show_model" name="show1" output="screen"/>
-
-</launch>

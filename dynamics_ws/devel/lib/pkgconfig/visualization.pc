@@ -1,8 +1,0 @@
-prefix=/home/crp/dynamics_ws/devel
-
-Name: visualization
-Description: Description of visualization
-Version: 0.0.0
-Cflags: -I/home/crp/dynamics_ws/src/visualization/include
-Libs: -L${prefix}/lib 
-Requires: 
