@@ -57,9 +57,13 @@ void Model::build_jaka(Model &jaka)
     jaka.Tq[0] = roz(jaka.joint[0].value);
     jaka.Ttree[0] = jaka.Tj[0] * jaka.Tq[0];
 
-    R = jaka.Ttree[0].block(0, 0, 3, 1);
+    R = jaka.Ttree[0].block(0, 0, 3, 3);
     xyz = jaka.Ttree[0].block(0, 3, 3, 1);
     AdjointT(R, xyz, jaka.Xtree[0]);
+
+    R.transposeInPlace();
+    xyz = (-R) * xyz;
+    AdjointT(R, xyz, jaka.X_uptree[0]);
 
     // Link1
     jaka.link[0].mass = 2.32744879445344;
@@ -80,9 +84,13 @@ void Model::build_jaka(Model &jaka)
     jaka.Tj[1] = Rp2T(R, xyz);
     jaka.Tq[1] = roz(jaka.joint[1].value);
     jaka.Ttree[1] = jaka.Tj[1] * jaka.Tq[1];
-    R = jaka.Ttree[1].block(0, 0, 3, 1);
+    R = jaka.Ttree[1].block(0, 0, 3, 3);
     xyz = jaka.Ttree[1].block(0, 3, 3, 1);
     AdjointT(R, xyz, jaka.Xtree[1]);
+
+    R.transposeInPlace();
+    xyz = (-R) * xyz;
+    AdjointT(R, xyz, jaka.X_uptree[1]);
 
     // Link2
     jaka.link[1].mass = 5.95378231056391;
@@ -102,9 +110,13 @@ void Model::build_jaka(Model &jaka)
     jaka.Tj[2] = Rp2T(R, xyz);
     jaka.Tq[2] = roz(jaka.joint[2].value);
     jaka.Ttree[2] = jaka.Tj[2] * jaka.Tq[2];
-    R = jaka.Ttree[2].block(0, 0, 3, 1);
+    R = jaka.Ttree[2].block(0, 0, 3, 3);
     xyz = jaka.Ttree[2].block(0, 3, 3, 1);
     AdjointT(R, xyz, jaka.Xtree[2]);
+
+    R.transposeInPlace();
+    xyz = (-R) * xyz;
+    AdjointT(R, xyz, jaka.X_uptree[2]);
     // Link3
     jaka.link[2].mass = 2.99370623962181;
     jaka.link[2].com << 0.129240666536215, 0, -0.014357405937694;
@@ -123,9 +135,14 @@ void Model::build_jaka(Model &jaka)
     jaka.Tj[3] = Rp2T(R, xyz);
     jaka.Tq[3] = roz(jaka.joint[3].value);
     jaka.Ttree[3] = jaka.Tj[3] * jaka.Tq[3];
-    R = jaka.Ttree[3].block(0, 0, 3, 1);
+    R = jaka.Ttree[3].block(0, 0, 3, 3);
     xyz = jaka.Ttree[3].block(0, 3, 3, 1);
     AdjointT(R, xyz, jaka.Xtree[3]);
+
+    R.transposeInPlace();
+    xyz = (-R) * xyz;
+    AdjointT(R, xyz, jaka.X_uptree[3]);
+
     // Link4
     jaka.link[3].mass = 1.16925259073626;
     jaka.link[3].com << 0.000241526484683341, -0.0325144102286034, 0.00192585885719938;
@@ -144,9 +161,14 @@ void Model::build_jaka(Model &jaka)
     jaka.Tj[4] = Rp2T(R, xyz);
     jaka.Tq[4] = roz(jaka.joint[4].value);
     jaka.Ttree[4] = jaka.Tj[4] * jaka.Tq[4];
-    R = jaka.Ttree[4].block(0, 0, 3, 1);
+    R = jaka.Ttree[4].block(0, 0, 3, 3);
     xyz = jaka.Ttree[4].block(0, 3, 3, 1);
     AdjointT(R, xyz, jaka.Xtree[4]);
+
+    R.transposeInPlace();
+    xyz = (-R) * xyz;
+    AdjointT(R, xyz, jaka.X_uptree[4]);
+
     // Link5
     jaka.link[4].mass = 1.30755746948789;
     jaka.link[4].com << 0.000197046850542781, 0.0226924862530863, -0.00183338030328768;
@@ -165,9 +187,13 @@ void Model::build_jaka(Model &jaka)
     jaka.Tj[5] = Rp2T(R, xyz);
     jaka.Tq[5] = roz(jaka.joint[5].value);
     jaka.Ttree[5] = jaka.Tj[5] * jaka.Tq[5];
-    R = jaka.Ttree[5].block(0, 0, 3, 1);
+    R = jaka.Ttree[5].block(0, 0, 3, 3);
     xyz = jaka.Ttree[5].block(0, 3, 3, 1);
     AdjointT(R, xyz, jaka.Xtree[5]);
+
+    R.transposeInPlace();
+    xyz = (-R) * xyz;
+    AdjointT(R, xyz, jaka.X_uptree[5]);
 
     // Link6
     jaka.link[5].mass = 0.507738406221693;
@@ -283,9 +309,10 @@ void Model::build_a1(Model &a1)
     R = a1.T_Flt.block(0, 0, 3, 3);
     xyz = a1.T_Flt.block(0, 3, 3, 1);
     AdjointT(R, xyz, a1.X_Flt);
-    
+
+    R.transposeInPlace();
     xyz = (-R) * xyz;
-    AdjointT(R.transpose(), xyz, a1.X_upFlt);
+    AdjointT(R, xyz, a1.X_upFlt);
 
     // Link_floating
     a1.link_Flt.mass = 6.0;
@@ -309,9 +336,10 @@ void Model::build_a1(Model &a1)
     R = a1.Ttree[0].block(0, 0, 3, 3);
     xyz = a1.Ttree[0].block(0, 3, 3, 1);
     AdjointT(R, xyz, a1.Xtree[0]);
-   
-    xyz = -R * xyz;
-    AdjointT(R.transpose(), xyz, a1.X_uptree[0]);
+
+    R.transposeInPlace();
+    xyz = (-R) * xyz;
+    AdjointT(R, xyz, a1.X_uptree[0]);
 
     // Link0
     a1.link[0].mass = 0.696;
@@ -335,9 +363,10 @@ void Model::build_a1(Model &a1)
     R = a1.Ttree[1].block(0, 0, 3, 3);
     xyz = a1.Ttree[1].block(0, 3, 3, 1);
     AdjointT(R, xyz, a1.Xtree[1]);
-    
-    xyz = -R * xyz;
-    AdjointT(R.transpose(), xyz, a1.X_uptree[1]);
+
+    R.transposeInPlace();
+    xyz = (-R) * xyz;
+    AdjointT(R, xyz, a1.X_uptree[1]);
 
     // Link1
     a1.link[1].mass = 1.013;
@@ -363,8 +392,9 @@ void Model::build_a1(Model &a1)
     xyz = a1.Ttree[2].block(0, 3, 3, 1);
     AdjointT(R, xyz, a1.Xtree[2]);
 
-    xyz = -R * xyz;
-    AdjointT(R.transpose(), xyz, a1.X_uptree[2]);
+    R.transposeInPlace();
+    xyz = (-R) * xyz;
+    AdjointT(R, xyz, a1.X_uptree[2]);
 
     // Link2
     a1.link[2].mass = 0.226;
@@ -389,9 +419,10 @@ void Model::build_a1(Model &a1)
     R = a1.Ttree[3].block(0, 0, 3, 3);
     xyz = a1.Ttree[3].block(0, 3, 3, 1);
     AdjointT(R, xyz, a1.Xtree[3]);
-    
-    xyz = -R * xyz;
-    AdjointT(R.transpose(), xyz, a1.X_uptree[3]);
+
+    R.transposeInPlace();
+    xyz = (-R) * xyz;
+    AdjointT(R, xyz, a1.X_uptree[3]);
 
     // Link3
     a1.link[3].mass = 0.696;
@@ -416,9 +447,10 @@ void Model::build_a1(Model &a1)
     R = a1.Ttree[4].block(0, 0, 3, 3);
     xyz = a1.Ttree[4].block(0, 3, 3, 1);
     AdjointT(R, xyz, a1.Xtree[4]);
-    
-    xyz = -R * xyz;
-    AdjointT(R.transpose(), xyz, a1.X_uptree[4]);
+
+    R.transposeInPlace();
+    xyz = (-R) * xyz;
+    AdjointT(R, xyz, a1.X_uptree[4]);
 
     // Link4
     a1.link[4].mass = 1.013;
@@ -443,9 +475,10 @@ void Model::build_a1(Model &a1)
     R = a1.Ttree[5].block(0, 0, 3, 3);
     xyz = a1.Ttree[5].block(0, 3, 3, 1);
     AdjointT(R, xyz, a1.Xtree[5]);
-    
-    xyz = -R * xyz;
-    AdjointT(R.transpose(), xyz, a1.X_uptree[5]);
+
+    R.transposeInPlace();
+    xyz = (-R) * xyz;
+    AdjointT(R, xyz, a1.X_uptree[5]);
 
     // Link5
     a1.link[5].mass = 0.226;
@@ -470,9 +503,10 @@ void Model::build_a1(Model &a1)
     R = a1.Ttree[6].block(0, 0, 3, 3);
     xyz = a1.Ttree[6].block(0, 3, 3, 1);
     AdjointT(R, xyz, a1.Xtree[6]);
-    
-    xyz = -R * xyz;
-    AdjointT(R.transpose(), xyz, a1.X_uptree[6]);
+
+    R.transposeInPlace();
+    xyz = (-R) * xyz;
+    AdjointT(R, xyz, a1.X_uptree[6]);
 
     // Link6
     a1.link[6].mass = 0.696;
@@ -497,9 +531,10 @@ void Model::build_a1(Model &a1)
     R = a1.Ttree[7].block(0, 0, 3, 3);
     xyz = a1.Ttree[7].block(0, 3, 3, 1);
     AdjointT(R, xyz, a1.Xtree[7]);
-    
-    xyz = -R * xyz;
-    AdjointT(R.transpose(), xyz, a1.X_uptree[7]);
+
+    R.transposeInPlace();
+    xyz = (-R) * xyz;
+    AdjointT(R, xyz, a1.X_uptree[7]);
 
     // Link7
     a1.link[7].mass = 1.013;
@@ -524,9 +559,10 @@ void Model::build_a1(Model &a1)
     R = a1.Ttree[8].block(0, 0, 3, 3);
     xyz = a1.Ttree[8].block(0, 3, 3, 1);
     AdjointT(R, xyz, a1.Xtree[8]);
-    
-    xyz = -R * xyz;
-    AdjointT(R.transpose(), xyz, a1.X_uptree[8]);
+
+    R.transposeInPlace();
+    xyz = (-R) * xyz;
+    AdjointT(R, xyz, a1.X_uptree[8]);
 
     // Link8
     a1.link[8].mass = 0.226;
@@ -551,9 +587,10 @@ void Model::build_a1(Model &a1)
     R = a1.Ttree[9].block(0, 0, 3, 3);
     xyz = a1.Ttree[9].block(0, 3, 3, 1);
     AdjointT(R, xyz, a1.Xtree[9]);
-    
-    xyz = -R * xyz;
-    AdjointT(R.transpose(), xyz, a1.X_uptree[9]);
+
+    R.transposeInPlace();
+    xyz = (-R) * xyz;
+    AdjointT(R, xyz, a1.X_uptree[9]);
 
     // Link9
     a1.link[9].mass = 0.696;
@@ -578,9 +615,10 @@ void Model::build_a1(Model &a1)
     R = a1.Ttree[10].block(0, 0, 3, 3);
     xyz = a1.Ttree[10].block(0, 3, 3, 1);
     AdjointT(R, xyz, a1.Xtree[10]);
-    
-    xyz = -R * xyz;
-    AdjointT(R.transpose(), xyz, a1.X_uptree[10]);
+
+    R.transposeInPlace();
+    xyz = (-R) * xyz;
+    AdjointT(R, xyz, a1.X_uptree[10]);
 
     // Link10
     a1.link[10].mass = 1.013;
@@ -606,9 +644,10 @@ void Model::build_a1(Model &a1)
     R = a1.Ttree[11].block(0, 0, 3, 3);
     xyz = a1.Ttree[11].block(0, 3, 3, 1);
     AdjointT(R, xyz, a1.Xtree[11]);
-    
-    xyz = -R * xyz;
-    AdjointT(R.transpose(), xyz, a1.X_uptree[11]);
+
+    R.transposeInPlace();
+    xyz = (-R) * xyz;
+    AdjointT(R, xyz, a1.X_uptree[11]);
 
     // Link11
     a1.link[11].mass = 0.226;

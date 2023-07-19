@@ -1,0 +1,8 @@
+prefix=/home/crp/git/dynamics_ws/install
+
+Name: gazebo_sim
+Description: Description of gazebo_sim
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib 
+Requires: 

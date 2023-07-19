@@ -38,6 +38,7 @@ public:
         I = (Eigen::Matrix<double, 6, 6> *)malloc(sizeof(Eigen::Matrix<double, 6, 6>) * NB);
         parent = (int *)malloc(sizeof(int) * NB);
         Xtree = (Eigen::Matrix<double, 6, 6> *)malloc(sizeof(Eigen::Matrix<double, 6, 6>) * NB);
+        X_uptree = (Eigen::Matrix<double, 6, 6> *)malloc(sizeof(Eigen::Matrix<double, 6, 6>) * NB);
         Xj = (Eigen::Matrix<double, 6, 6> *)malloc(sizeof(Eigen::Matrix<double, 6, 6>) * NB);
         Xq = (Eigen::Matrix<double, 6, 6> *)malloc(sizeof(Eigen::Matrix<double, 6, 6>) * NB);
         Ttree = (Eigen::Matrix<double, 4, 4> *)malloc(sizeof(Eigen::Matrix<double, 4, 4>) * NB);

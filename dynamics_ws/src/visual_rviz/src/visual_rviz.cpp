@@ -9,14 +9,15 @@ int main(int argc, char *argv[])
     ros::NodeHandle n;
     ros::Rate r(1);
     ros::Publisher marker_pub = n.advertise<visualization_msgs::Marker>("visualization_marker", 1);
-    Model a1(12,4);           // a1有12个moving连杆
-    a1.build_a1(a1); // 设置jaka机械臂的参数
+    Model a1(12);           // a1有12个moving连杆
+    a1.build_a1(a1);     // 设置jaka机械臂的参数
 
     double q[12] = {0.5f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f};
-    a1.update_model(a1, q,nullptr);
+    //double q[6] = {0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
+    //jaka.update_model(jaka, q,nullptr);
     while (ros::ok())
     {
-        show_model_in_rviz(a1, marker_pub);
+       // show_model_in_rviz(jaka, marker_pub);
         r.sleep();
     }
 
