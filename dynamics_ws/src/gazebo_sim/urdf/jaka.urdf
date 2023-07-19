@@ -1,0 +1,532 @@
+<robot name="Zu3">
+  <material name="black">
+    <color rgba="0.0 0.0 0.0 1.0"/>
+  </material>
+  <material name="blue">
+    <color rgba="0.0 0.0 0.8 1.0"/>
+  </material>
+  <material name="green">
+    <color rgba="0.0 0.8 0.0 1.0"/>
+  </material>
+  <material name="grey">
+    <color rgba="0.2 0.2 0.2 1.0"/>
+  </material>
+  <material name="silver">
+    <color rgba="0.913725490196 0.913725490196 0.847058823529 1.0"/>
+  </material>
+  <material name="orange">
+    <color rgba="1.0 0.423529411765 0.0392156862745 1.0"/>
+  </material>
+  <material name="brown">
+    <color rgba="0.870588235294 0.811764705882 0.764705882353 1.0"/>
+  </material>
+  <material name="red">
+    <color rgba="0.8 0.0 0.0 1.0"/>
+  </material>
+  <material name="white">
+    <color rgba="1.0 1.0 1.0 1.0"/>
+  </material>
+
+  <link name="world"/>
+
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="-1.95690483413759E-05 -0.00173310503254305 -0.039882272878827"
+        rpy="0 0 0" />
+      <mass
+        value="2.99589517250389" />
+      <inertia
+        ixx="0.0045688691265474" 
+        ixy="6.94206801829612E-07"
+        ixz="-2.70287850851623E-06"
+        iyy="0.00449361461372396"
+        iyz="-3.92841672385431E-05"
+        izz="0.00624031653552083" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 0 0 1.0" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="fixed" type="fixed">
+    <parent link="world"/>
+    <child link="base_link"/>
+  </joint>
+
+  <link
+    name="Link1">
+    <inertial>
+      <origin
+        xyz="7.11263397335683e-06 0.00217822178706876 -0.0149669059830168"
+        rpy="0 0 0" />
+      <mass
+        value="2.32744879445344" />
+      <inertia
+        ixx="0.00458147343407386"
+        ixy="1.48173447266549E-05"
+        ixz="-1.22875547954071E-06"
+        iyy="0.00454359720683469"
+        iyz="-3.06997251326517E-05"
+        izz="0.00363214903311472" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka/meshes/1.STL" />
+      </geometry>
+      <material name="orange"/>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka/meshes/1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="J1" type="continuous">
+    <parent link="base_link" />
+    <child link="Link1" />
+    <origin xyz="0 0 0.0645" rpy="0 0 0" />
+    <axis xyz="0 0 1" />
+    <dynamics damping="0.02" friction="0.2"/>
+    <limit effort="60.0" velocity="21"/>
+  </joint>
+  <link
+    name="Link2">
+    <inertial>
+      <origin
+        xyz="0.119793596970604 0 -0.102397627385994"
+        rpy="0 0 0" />
+      <mass
+        value="5.95378231056391" />
+      <inertia
+        ixx="0.0106282836293239"
+        ixy="2.29382670166062E-05"
+        ixz="-0.000911073241596094"
+        iyy="0.0804164638556798"
+        iyz="-2.47681280688607E-06"
+        izz="0.0779892876387226" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka/meshes/2.STL" />
+      </geometry>
+      <material name="orange"/>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka/meshes/2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="J2"
+    type="continuous">
+    <origin
+      xyz="0 0 0"
+      rpy="1.5708 0 0" />
+    <parent
+      link="Link1" />
+    <child
+      link="Link2" />
+    <axis
+      xyz="0 0 1" />
+    <dynamics damping="0.02" friction="0.2"/>
+    <limit effort="50.0" velocity="21"/>
+  </joint>
+  <link
+    name="Link3">
+    <inertial>
+      <origin
+        xyz="0.129240666536215 -9.0720152644122E-05 -0.014357405937694"
+        rpy="0 0 0" />
+      <mass
+        value="2.99370623962181" />
+      <inertia
+        ixx="0.00375122418749307"
+        ixy="3.0222385910835E-05"
+        ixz="0.00143595144649744"
+        iyy="0.0304577469052334"
+        iyz="1.80724965262349E-06"
+        izz="0.0293178341594524" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka/meshes/3.STL" />
+      </geometry>
+      <material name="orange"/>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka/meshes/3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="J3"
+    type="continuous">
+    <origin
+      xyz="0.246 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="Link2" />
+    <child
+      link="Link3" />
+    <axis
+      xyz="0 0 1" />
+    <dynamics damping="0.02" friction="0.2"/>
+    <limit effort="50" velocity="21"/>
+  </joint>
+  <link
+    name="Link4">
+    <inertial>
+      <origin
+        xyz="0.000241526484683341 -0.0325144102286034 0.00192585885719938"
+        rpy="0 0 0" />
+      <mass
+        value="1.16925259073626" />
+      <inertia
+        ixx="0.00173057761809281"
+        ixy="-5.81059937365353E-06"
+        ixz="2.07389621178962E-06"
+        iyy="0.000991339747095069"
+        iyz="-8.39621020255761E-05"
+        izz="0.00170641007481186" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka/meshes/4.STL" />
+      </geometry>
+      <material name="orange"/>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka/meshes/4.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="J4"
+    type="continuous">
+    <origin
+      xyz="0.228 0 -0.113"
+      rpy="0 0 0" />
+    <parent
+      link="Link3" />
+    <child
+      link="Link4" />
+    <axis
+      xyz="0 0 1" />
+    <dynamics damping="0.02" friction="0.2"/>
+    <limit effort="50.0" velocity="21"/>
+  </joint>
+  <link
+    name="Link5">
+    <inertial>
+      <origin
+        xyz="0.000197046850542781 0.0226924862530863 -0.00183338030328768"
+        rpy="0 0 0" />
+      <mass
+        value="1.30755746948789" />
+      <inertia
+        ixx="0.00285036503364272"
+        ixy="2.02988590629697E-06"
+        ixz="-2.9472432087774E-06"
+        iyy="0.00109173403124772"
+        iyz="-7.81744010215167E-05"
+        izz="0.00282378446902515" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka/meshes/5.STL" />
+      </geometry>
+      <material name="orange"/>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka/meshes/5.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="J5"
+    type="continuous">
+    <origin
+      xyz="0 -0.1175 0"
+      rpy="1.5708 0 0" />
+    <parent
+      link="Link4" />
+    <child
+      link="Link5" />
+    <axis
+      xyz="0 0 1" />
+    <dynamics damping="0.02" friction="0.2"/>
+    <limit effort="33.5" velocity="21"/>
+  </joint>
+  <link
+    name="Link6">
+    <inertial>
+      <origin
+        xyz="-0.000117639495146871 -8.07001820749137E-05 -0.0132366598443958"
+        rpy="0 0 0" />
+      <mass
+        value="0.507738406221693" />
+      <inertia
+        ixx="0.000208846698087936"
+        ixy="-8.51820910180099E-07"
+        ixz="1.66864867720948E-07"
+        iyy="0.000211905205869407"
+        iyz="-8.18043220133994E-07"
+        izz="0.000360986690973954" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka/meshes/6.STL" />
+      </geometry>
+      <material name="orange"/>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jaka/meshes/6.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="J6"
+    type="continuous">
+    <origin
+      xyz="0 0.105 0"
+      rpy="-1.5708 0 0" />
+    <parent
+      link="Link5" />
+    <child
+      link="Link6" />
+    <axis
+      xyz="0 0 1" />
+    <dynamics damping="0.02" friction="0.2"/>
+    <limit effort="33.5" velocity="21"/>
+  </joint>
+
+  <transmission name="J1_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="J1">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="J1_motor">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="J2_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="J2">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="J2_motor">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="J3_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="J3">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="J3_motor">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="J4_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="J4">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="J4_motor">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="J5_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="J5">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="J5_motor">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="J6_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="J6">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="J6_motor">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so" >
+      <robotNamespace>/jaka_Robot</robotNamespace>
+    </plugin>
+  </gazebo>
+
+  <gazebo reference = "base_link">
+      <material>Gazebo/Red</material>
+  </gazebo>
+
+  <gazebo reference = "Link1">
+    <material>Gazebo/White</material>
+  </gazebo>
+
+  <gazebo reference = "Link2">
+    <material>Gazebo/Red</material>
+  </gazebo>
+
+  <gazebo reference = "Link3">
+    <material>Gazebo/White</material>
+  </gazebo>
+
+  <gazebo reference = "Link4">
+    <material>Gazebo/Red</material>
+  </gazebo>
+
+  <gazebo reference = "Link5">
+    <material>Gazebo/White</material>
+  </gazebo>
+
+  <gazebo reference = "Link6">
+    <material>Gazebo/Red</material>
+  </gazebo>
+
+ <link name="ft_sensor_link">
+    <collision>
+      <origin xyz="0 0 0" rpy = "0 0 0"/>
+      <geometry>
+        <cylinder length = "0.005" radius="0.05"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy = "0 0 0"/>
+      <geometry>
+        <cylinder length = "0.005" radius="0.05"/>
+      </geometry>
+      <material name = "ft_sensor_color">
+        <color rgba = "1 0 0 1"/>
+      </material>
+    </visual>
+
+    <inertial>
+      <mass value = "0.01"/>
+      <origin xyz=" 0 0 0" rpy = "0 0 0" />
+      <inertia ixx="0.01" ixy="0" ixz = "0" iyy="0.01" iyz = "0" izz="0.01" />
+    </inertial>
+
+  </link>
+
+  <joint name = "ft_sensor_jnt" type = "prismatic">
+    <parent link = "Link6"/>
+    <child link="ft_sensor_link"/>
+    <origin xyz="0 0 1" rpy = "0 0 0" />
+    <axis xyz = "0 0 1"/>
+    <limit effort = "100.0" lower = "0" upper= "0.0" velocity="0.01"/>
+    <dynamics damping = "1.0"/>
+  </joint>
+
+  <gazebo reference= "ft_sensor_jnt">
+    <provideFeedback>true</provideFeedback>
+  </gazebo>
+
+  <gazebo reference = "ft_sensor_link">
+    <material>Gazebo/Red</material>
+  </gazebo>
+
+  <gazebo>
+    <plugin name="ft_sensor" filename= "libgazebo_ros_ft_sensor.so">
+      <updateRate>1000.0</updateRate>
+      <topicName>ft_sensor_topic</topicName>
+      <jointName>ft_sensor_jnt</jointName>
+    </plugin>
+  </gazebo> 
+
+
+
+
+</robot>
