@@ -568,21 +568,12 @@ Eigen::MatrixXd Cal_Geometric_Jacobain(Model &model, int ib, bool Coordinate)
     // Jacobian of body ib repesent at body ib coordinate
     else if (Coordinate == BODY_COORDINATE)
     {
-        Eigen::Matrix<double, 6, 6> *X_upTree;
         Eigen::Matrix<double, 6, 6> X_up;
         X_up.setIdentity(6, 6);
-        X_upTree = (Eigen::Matrix<double, 6, 6> *)malloc(sizeof(Eigen::Matrix<double, 6, 6>) * NB);
-        //Calculate X_up set, X_up[i] means i_X_lenda(i)
-        for (int i = 0; i < num; i++)
-        {
-            Eigen::Matrix3d R = model.Ttree[k[i]].block(0, 0, 3, 3).transpose();
-            Eigen::Vector3d p = -R * model.Ttree[k[i]].block(0, 3, 3, 1);
-            AdjointT(R, p, X_upTree[i]);
-        }
         J.block(0, k[num - 1], 6, 1) = model.joint[k[num - 1]].S_body;
         for (int i = num - 1; i > 0; --i)
         {
-            X_up = X_upTree[i] * X_up;
+            X_up = X_up * model.X_uptree[i];
             J.block(0, k[i-1], 6, 1) = X_up * model.joint[k[i-1]].S_body;
         }
     }
@@ -592,12 +583,319 @@ Eigen::MatrixXd Cal_Geometric_Jacobain(Model &model, int ib, bool Coordinate)
 // Calculate matrix K which depict the constrian of the model
 // model: The robot model which must been created
 //     v: each moving link's spatial velocity, size(v) = [6,NB]
-//   avp: each moving velocity product acceleration, size(a) = [6,NB]
+//   avp: each moving velocity product acceleration, size(avp) = [6,NB]
 //     k: Matrix k is input, and satisfy K*qdd = k
-Eigen::MatrixXd Cal_K(Model &model,
+Eigen::MatrixXd Cal_K_Flt(Model &model,
                       Eigen::MatrixXd v,
                       Eigen::MatrixXd avp,
                       Eigen::MatrixXd &k)
 {
+    int NB = model.NB;
+    int NL = model.NL;
+    int *nc;
+    nc = (int *)malloc(sizeof(int) * NL);
+    MatrixXd K;
+    int col_K = 0, row_K = 0;
+    col_K = NB + 6;
+    for (int i = 0; i < NL;i++)
+    {
+        nc[i] = model.loopjoint[i].T.cols();
+    }
+    for (int i = 0; i < NL; i++)
+    {
+        row_K += nc[i];
+    }
+    K.setZero(row_K, col_K);
+    k.setZero(row_K, 1);
+    int row_index = 0;
+    for (int nl = 0; nl < NL; nl++)
+    {
+        Matrix<double, 6, 6> lp_X_s;
+        Matrix3d R_t;
+        R_t = model.loopjoint[nl].Ts.block(0, 0, 3, 3);
+        Vector3d xyz = model.loopjoint[nl].Ts.block(0, 3, 3, 1);
+        R_t.transposeInPlace();
+        xyz = (-R_t) * xyz;
+        AdjointT(R_t, xyz, lp_X_s);
 
+        Matrix<double, 6, 6> lp_X_p;
+        R_t = model.loopjoint[nl].Tp.block(0, 0, 3, 3);
+        xyz = model.loopjoint[nl].Tp.block(0, 3, 3, 1);
+        R_t.transposeInPlace();
+        xyz = (-R_t) * xyz;
+        AdjointT(R_t, xyz, lp_X_p);
+
+        Matrix<double, 6, 1> vs, vp, as, ap;
+
+        Matrix<double, 6, 6> lps_X_ref;
+        Matrix<double, 6, 6> lpp_X_ref; 
+        Matrix<double, 6, 6> ref_X_p;
+        ref_X_p.setIdentity();
+        Matrix<double, 6, 6> ref_X_s;
+        ref_X_s.setIdentity();
+        Matrix<double, 6, 6> p_X_ref;
+        p_X_ref.setIdentity();
+        Matrix<double, 6, 6> s_X_ref;
+        s_X_ref.setIdentity();
+        // initial k set
+        int *ks_set, *ks_temp;
+        ks_temp = (int *)malloc(sizeof(int) * NB);
+        ks_set = (int *)malloc(sizeof(int) * NB);
+        int j = model.loopjoint[nl].suc;
+        int num_ks = 0;
+        while (j >= 0)
+        {
+            ks_temp[num_ks] = j;
+            j = model.parent[j];
+            num_ks++;
+        }
+        for (int i = num_ks - 1; i >= 0; --i)
+        {
+            ks_set[num_ks - 1 - i] = ks_temp[i];
+        }
+        Eigen::Matrix<double, 6, 6> X_up;
+        X_up.setIdentity(6, 6);
+        for (int i = 0; i < num_ks; i++)
+        {
+            X_up = model.X_uptree[ks_set[i]] * X_up;
+        }
+        s_X_ref = X_up * model.X_upFlt;
+        lps_X_ref = lp_X_s * s_X_ref;
+        //------------------------------------------
+        int *kp_set, *kp_temp;
+        kp_temp = (int *)malloc(sizeof(int) * NB);
+        kp_set = (int *)malloc(sizeof(int) * NB);
+        j = model.loopjoint[nl].pre;
+        int num_kp = 0;
+        while (j >= 0)
+        {
+            kp_temp[num_kp] = j;
+            j = model.parent[j];
+            num_kp++;
+        }
+        for (int i = num_kp - 1; i >= 0; --i)
+        {
+            kp_set[num_kp - 1 - i] = kp_temp[i];
+        }
+        X_up.setIdentity(6, 6);
+        for (int i = 0; i < num_kp; i++)
+        {
+            X_up = model.X_uptree[kp_set[i]] * X_up;
+        }
+        p_X_ref = X_up * model.X_upFlt;
+        lpp_X_ref = lp_X_p * p_X_ref;
+
+        // --------------------------------------
+        if (model.loopjoint[nl].pre == WORLD)
+        {
+            vp.setZero(6, 1);
+            ap.setZero(6, 1);
+        }
+        else
+        {
+            vp = ref_X_p * v.block(0, model.loopjoint[nl].pre, 6, 1);
+            ap = ref_X_p * avp.block(0, model.loopjoint[nl].pre, 6, 1);
+        }
+        if (model.loopjoint[nl].suc == WORLD)
+        {
+            vs.setZero(6, 1);
+            as.setZero(6, 1);
+        }
+        else
+        {
+            vs = ref_X_s * v.block(0, model.loopjoint[nl].suc, 6, 1);
+            as = ref_X_s * avp.block(0, model.loopjoint[nl].suc, 6, 1);
+        }
+
+        MatrixXd T_ref = lps_X_ref.transpose() * model.loopjoint[nl].T;
+
+        if(nl!=0)
+            row_index += nc[nl - 1];
+
+        k.block(row_index, 0, nc[nl], 1) = -T_ref.transpose() * (as - ap + crm(vs) * vp);
+    
+        Matrix<double, 6, 6> X_down;
+        X_down.setIdentity(6, 6);
+        for (int i = 0; i < num_ks; i++)
+        {
+            X_down = X_down * model.Xtree[ks_set[i]];
+            K.block(row_index, 6 + ks_set[i], nc[nl], 1) = T_ref.transpose() * X_down * model.joint[ks_set[i]].S_body;  
+        }
+        for (int i = 0; i < num_kp; i++)
+        {
+            X_down = X_down * model.Xtree[kp_set[i]];
+            K.block(row_index, 6 + kp_set[i], nc[nl], 1) = T_ref.transpose() * X_down * model.joint[kp_set[i]].S_body;
+        }
+        K.block(row_index, 0, nc[nl], 6) = T_ref.transpose() * model.X_Flt;
+    }
+
+    return K;
+}
+
+// Calculate matrix K which depict the constrian of the model
+// model: The robot model which must been created
+//     v: each moving link's spatial velocity, size(v) = [6,NB]
+//   avp: each moving velocity product acceleration, size(avp) = [6,NB]
+//     k: Matrix k is input, and satisfy K*qdd = k
+Eigen::MatrixXd Cal_K(Model &model,
+                          Eigen::MatrixXd v,
+                          Eigen::MatrixXd avp,
+                          Eigen::MatrixXd &k)
+{
+    int NB = model.NB;
+    int NL = model.NL;
+    int *nc;
+    nc = (int *)malloc(sizeof(int) * NL);
+    MatrixXd K;
+    int col_K = 0, row_K = 0;
+    col_K = NB + 6;
+    for (int i = 0; i < NL; i++)
+    {
+        nc[i] = model.loopjoint[i].T.cols();
+    }
+    for (int i = 0; i < NL; i++)
+    {
+        row_K += nc[i];
+    }
+    K.setZero(row_K, col_K);
+    k.setZero(row_K, 1);
+
+    for (int nl = 0; nl < NL; nl++)
+    {
+        Matrix<double, 6, 6> lp_X_s;
+        Matrix3d R_t;
+        R_t = model.loopjoint[nl].Ts.block(0, 0, 3, 3);
+        Vector3d xyz = model.loopjoint[nl].Ts.block(0, 3, 3, 1);
+        R_t.transposeInPlace();
+        xyz = (-R_t) * xyz;
+        AdjointT(R_t, xyz, lp_X_s);
+
+        Matrix<double, 6, 6> lp_X_p;
+        R_t = model.loopjoint[nl].Tp.block(0, 0, 3, 3);
+        xyz = model.loopjoint[nl].Tp.block(0, 3, 3, 1);
+        R_t.transposeInPlace();
+        xyz = (-R_t) * xyz;
+        AdjointT(R_t, xyz, lp_X_p);
+
+        Matrix<double, 6, 1> vs, vp, as, ap;
+
+        Matrix<double, 6, 6> lps_X_ref;
+        Matrix<double, 6, 6> lpp_X_ref;
+        Matrix<double, 6, 6> ref_X_p;
+        ref_X_p.setIdentity();
+        Matrix<double, 6, 6> ref_X_s;
+        ref_X_s.setIdentity();
+        Matrix<double, 6, 6> p_X_ref;
+        p_X_ref.setIdentity();
+        Matrix<double, 6, 6> s_X_ref;
+        s_X_ref.setIdentity();
+        // initial k set
+        int *ks_set, *ks_temp;
+        ks_temp = (int *)malloc(sizeof(int) * NB);
+        ks_set = (int *)malloc(sizeof(int) * NB);
+        int j = model.loopjoint[nl].suc;
+        int num_ks = 0;
+        while (j >= 0)
+        {
+            ks_temp[num_ks] = j;
+            j = model.parent[j];
+            num_ks++;
+        }
+        for (int i = num_ks - 1; i >= 0; --i)
+        {
+            ks_set[num_ks - 1 - i] = ks_temp[i];
+        }
+        Eigen::Matrix<double, 6, 6> X_up;
+        X_up.setIdentity(6, 6);
+        for (int i = 0; i < num_ks; i++)
+        {
+            X_up = model.X_uptree[ks_set[i]] * X_up;
+        }
+        s_X_ref = X_up;
+        lps_X_ref = lp_X_s * s_X_ref;
+        //------------------------------------------
+        int *kp_set, *kp_temp;
+        kp_temp = (int *)malloc(sizeof(int) * NB);
+        kp_set = (int *)malloc(sizeof(int) * NB);
+        j = model.loopjoint[nl].pre;
+        int num_kp = 0;
+        while (j >= 0)
+        {
+            kp_temp[num_kp] = j;
+            j = model.parent[j];
+            num_kp++;
+        }
+        for (int i = num_kp - 1; i >= 0; --i)
+        {
+            kp_set[num_kp - 1 - i] = kp_temp[i];
+        }
+        X_up.setIdentity(6, 6);
+        for (int i = 0; i < num_kp; i++)
+        {
+            X_up = model.X_uptree[kp_set[i]] * X_up;
+        }
+        p_X_ref = X_up;
+        lpp_X_ref = lp_X_p * p_X_ref;
+
+        // --------------------------------------
+        if (model.loopjoint[nl].pre == WORLD)
+        {
+            vp.setZero(6, 1);
+            avp.setZero(6, 1);
+        }
+        else
+        {
+            vp = ref_X_p * v.block(0, model.loopjoint[nl].pre, 6, 1);
+            ap = ref_X_p * avp.block(0, model.loopjoint[nl].pre, 6, 1);
+        }
+        if (model.loopjoint[nl].suc == WORLD)
+        {
+            vs.setZero(6, 1);
+            avp.setZero(6, 1);
+        }
+        else
+        {
+            vs = ref_X_s * v.block(0, model.loopjoint[nl].suc, 6, 1);
+            as = ref_X_s * avp.block(0, model.loopjoint[nl].suc, 6, 1);
+        }
+
+        MatrixXd T_ref = lps_X_ref.transpose() * model.loopjoint[nl].T;
+        if (nl == 0)
+        {
+            k.block(0, 0, nc[nl], 1) = -T_ref.transpose() * (as - ap + crm(vs) * vp);
+        }
+        else
+        {
+            k.block(nc[nl - 1], 0, nc[nl], 1) = -T_ref.transpose() * (as - ap + crm(vs) * vp);
+        }
+
+        Matrix<double, 6, 6> X_down;
+        X_down.setIdentity(6, 6);
+        for (int i = 0; i < num_ks; i++)
+        {
+            X_down = X_down * model.Xtree[ks_set[i]];
+            if (nl == 0)
+            {
+                K.block(0, 6 + ks_set[i], nc[nl], 1) = T_ref.transpose() * X_down * model.joint[ks_set[i]].S_body;
+            }
+            else
+            {
+                K.block(nc[nl - 1], 6 + ks_set[i], nc[nl], 1) = T_ref.transpose() * X_down * model.joint[ks_set[i]].S_body;
+            }
+        }
+        for (int i = 0; i < num_kp; i++)
+        {
+            X_down = X_down * model.Xtree[kp_set[i]];
+            if (nl == 0)
+            {
+                K.block(0, kp_set[i], nc[nl], 1) = T_ref.transpose() * X_down * model.joint[kp_set[i]].S_body;
+            }
+            else
+            {
+                K.block(nc[nl - 1], kp_set[i], nc[nl], 1) = T_ref.transpose() * X_down * model.joint[kp_set[i]].S_body;
+            }
+        }
+    }
+
+    return K;
 }

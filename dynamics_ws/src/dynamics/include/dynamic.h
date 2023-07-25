@@ -59,9 +59,14 @@ void AdjointT(Eigen::Matrix3d R, Eigen::Vector3d p, Eigen::Matrix<double, 6, 6> 
 
 Eigen::MatrixXd Cal_Geometric_Jacobain(Model &model, int ib, bool Coordinate);
 
+Eigen::MatrixXd Cal_K_Flt(Model &model,
+                          Eigen::MatrixXd v,
+                          Eigen::MatrixXd avp,
+                          Eigen::MatrixXd &k);
+
 Eigen::MatrixXd Cal_K(Model &model,
-                      Eigen::MatrixXd v,
-                      Eigen::MatrixXd avp,
-                      Eigen::MatrixXd &k);
+                          Eigen::MatrixXd v,
+                          Eigen::MatrixXd avp,
+                          Eigen::MatrixXd &k);
 
 #endif

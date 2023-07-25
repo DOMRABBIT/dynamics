@@ -246,6 +246,10 @@ void Model::update_model(Model &model, double q[], double q_flt[])
         R = model.T_Flt.block(0, 0, 3, 3);
         xyz = model.T_Flt.block(0, 3, 3, 1);
         AdjointT(R, xyz, model.X_Flt);
+
+        R.transposeInPlace();
+        xyz = (-R) * xyz;
+        AdjointT(R, xyz, model.X_upFlt);
     }
     for (int i = 0; i < model.NB; i++)
     {
@@ -274,6 +278,9 @@ void Model::update_model(Model &model, double q[], double q_flt[])
         xyz = model.Ttree[i].block(0, 3, 3, 1);
         AdjointT(R, xyz, model.Xtree[i]);
 
+        R.transposeInPlace();
+        xyz = (-R) * xyz;
+        AdjointT(R, xyz, model.X_uptree[i]);
         // std::cout << i << ": " << endl
         //           << model.Ttree[i] << endl;
     }
@@ -663,7 +670,6 @@ void Model::build_a1(Model &a1)
     mcI_to_rbi(a1.link_Flt.mass, a1.link_Flt.com, a1.link_Flt.Ic, a1.I_base);
 
     // Setting loop joint 0
-    Matrix4d Ts,Tp;
     a1.loopjoint[0].pre = WORLD;
     a1.loopjoint[0].suc = 2;
     a1.loopjoint[0].T.setZero(6, 3);
@@ -672,17 +678,17 @@ void Model::build_a1(Model &a1)
         0, 1, 0,
         0, 0, 1;
     xyz << 0, 0, -0.2;
-    Ts = Rp2T(R, xyz);
-    R = Ts.block(0, 0, 3, 3);
-    xyz = Ts.block(0, 3, 3, 1);
+    a1.loopjoint[0].Ts = Rp2T(R, xyz);
+    R = a1.loopjoint[0].Ts.block(0, 0, 3, 3);
+    xyz = a1.loopjoint[0].Ts.block(0, 3, 3, 1);
     AdjointT(R, xyz, a1.loopjoint[0].Xs);
     R << 1, 0, 0,
         0, 1, 0,
         0, 0, 1;
     xyz << 0, 0, 0;
-    Tp = Rp2T(R, xyz);
-    R = Tp.block(0, 0, 3, 3);
-    xyz = Tp.block(0, 3, 3, 1);
+    a1.loopjoint[0].Tp = Rp2T(R, xyz);
+    R = a1.loopjoint[0].Tp.block(0, 0, 3, 3);
+    xyz = a1.loopjoint[0].Tp.block(0, 3, 3, 1);
     AdjointT(R, xyz, a1.loopjoint[0].Xp);
 
     // Setting loop joint 1
@@ -694,17 +700,17 @@ void Model::build_a1(Model &a1)
         0, 1, 0,
         0, 0, 1;
     xyz << 0, 0, -0.2;
-    Ts = Rp2T(R, xyz);
-    R = Ts.block(0, 0, 3, 3);
-    xyz = Ts.block(0, 3, 3, 1);
+    a1.loopjoint[1].Ts = Rp2T(R, xyz);
+    R = a1.loopjoint[1].Ts.block(0, 0, 3, 3);
+    xyz = a1.loopjoint[1].Ts.block(0, 3, 3, 1);
     AdjointT(R, xyz, a1.loopjoint[1].Xs);
     R << 1, 0, 0,
         0, 1, 0,
         0, 0, 1;
     xyz << 0, 0, 0;
-    Tp = Rp2T(R, xyz);
-    R = Tp.block(0, 0, 3, 3);
-    xyz = Tp.block(0, 3, 3, 1);
+    a1.loopjoint[1].Tp = Rp2T(R, xyz);
+    R = a1.loopjoint[1].Tp.block(0, 0, 3, 3);
+    xyz = a1.loopjoint[1].Tp.block(0, 3, 3, 1);
     AdjointT(R, xyz, a1.loopjoint[1].Xp);
 
     // Setting loop joint 2
@@ -716,17 +722,17 @@ void Model::build_a1(Model &a1)
         0, 1, 0,
         0, 0, 1;
     xyz << 0, 0, -0.2;
-    Ts = Rp2T(R, xyz);
-    R = Ts.block(0, 0, 3, 3);
-    xyz = Ts.block(0, 3, 3, 1);
+    a1.loopjoint[2].Ts = Rp2T(R, xyz);
+    R = a1.loopjoint[2].Ts.block(0, 0, 3, 3);
+    xyz = a1.loopjoint[2].Ts.block(0, 3, 3, 1);
     AdjointT(R, xyz, a1.loopjoint[2].Xs);
     R << 1, 0, 0,
         0, 1, 0,
         0, 0, 1;
     xyz << 0, 0, 0;
-    Tp = Rp2T(R, xyz);
-    R = Tp.block(0, 0, 3, 3);
-    xyz = Tp.block(0, 3, 3, 1);
+    a1.loopjoint[2].Tp = Rp2T(R, xyz);
+    R = a1.loopjoint[2].Tp.block(0, 0, 3, 3);
+    xyz = a1.loopjoint[2].Tp.block(0, 3, 3, 1);
     AdjointT(R, xyz, a1.loopjoint[2].Xp);
 
     // Setting loop joint 3
@@ -738,17 +744,17 @@ void Model::build_a1(Model &a1)
         0, 1, 0,
         0, 0, 1;
     xyz << 0, 0, -0.2;
-    Ts = Rp2T(R, xyz);
-    R = Ts.block(0, 0, 3, 3);
-    xyz = Ts.block(0, 3, 3, 1);
+    a1.loopjoint[3].Ts = Rp2T(R, xyz);
+    R = a1.loopjoint[3].Ts.block(0, 0, 3, 3);
+    xyz = a1.loopjoint[3].Ts.block(0, 3, 3, 1);
     AdjointT(R, xyz, a1.loopjoint[3].Xs);
     R << 1, 0, 0,
         0, 1, 0,
         0, 0, 1;
     xyz << 0, 0, 0;
-    Tp = Rp2T(R, xyz);
-    R = Tp.block(0, 0, 3, 3);
-    xyz = Tp.block(0, 3, 3, 1);
+    a1.loopjoint[3].Tp = Rp2T(R, xyz);
+    R = a1.loopjoint[3].Tp.block(0, 0, 3, 3);
+    xyz = a1.loopjoint[3].Tp.block(0, 3, 3, 1);
     AdjointT(R, xyz, a1.loopjoint[3].Xp);
 
     cout

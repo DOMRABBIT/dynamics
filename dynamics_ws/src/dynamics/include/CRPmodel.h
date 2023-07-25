@@ -19,8 +19,10 @@ struct _LoopJoint
 {
     int suc;      //loop joint's successor
     int pre;      // loop joint's predessor
-    Eigen::Matrix<double, 6, 6> Xp; // loop joint's frame represent to successor link's frame
-    Eigen::Matrix<double, 6, 6> Xs; // loop joint's frame represent to predessor link's frame
+    Eigen::Matrix<double, 6, 6> Xp; // loop joint's frame represent to predessor link's frame
+    Eigen::Matrix<double, 6, 6> Xs; // loop joint's frame represent to successor link's frame
+    Eigen::Matrix<double, 4, 4> Tp; // loop joint's frame represent to predessor link's frame
+    Eigen::Matrix<double, 4, 4> Ts; // loop joint's frame represent to successor link's frame
     Eigen::MatrixXd T; // constrian force space represent at loop joint frame
 };
 

@@ -182,16 +182,26 @@ int main(int argc, char *argv[])
         //      << C_Flt.block(6,0,12,1).transpose() << endl;
         // cout << "tau_ID: "
         //      << tau_IDFlt.transpose() << endl;
-        cout << "a_base: " << a0.transpose() << endl
-             << endl;
+        // cout << "a_base: " << a0.transpose() << endl
+        //      << endl;
         // cout<< "tau_CalFlt: " << endl
         //     << tau_CalFlt.transpose() << endl;
-        cout << "tau_CalFltbig: " << endl
-             << tau_CalFlt_big.transpose() << endl;
-        cout << "tau_error: " << endl
-             << tau_CalFlt.transpose() - tau_IDFlt.transpose() << endl;
+        // cout << "tau_CalFltbig: " << endl
+        //      << tau_CalFlt_big.transpose() << endl;
+        // cout << "tau_error: " << endl
+        //      << tau_CalFlt.transpose() - tau_IDFlt.transpose() << endl;
 
         // /*--Floating base test--*/
+
+        /*-- contrains test --*/
+        MatrixXd K,k;
+        K = Cal_K_Flt(a1, v, a, k);
+
+        cout << "K: " << endl
+             << K << endl;
+        cout << "k: " << endl
+             << k.transpose() << endl;
+        /*-- contrains test --*/
 
         // JointPos_PD_controll(q_cmd, qd_cmd, q, qd, tau_PD);
 
