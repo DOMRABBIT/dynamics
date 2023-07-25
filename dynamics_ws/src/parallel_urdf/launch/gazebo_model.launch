@@ -1,0 +1,32 @@
+<launch>
+
+    <include file ="$(find gazebo_ros)/launch/empty_world.launch"/>
+
+  <!-- Load joint controller configurations from YAML file to parameter server -->
+  <!-- 加载关节控制器配置参数 -->
+  <!-- <rosparam file="$(find gazebo_sim)/config/jaka_params.yaml"  command="load"/> -->
+
+<!-- Convert xacro model file and put on parameter server -->
+<param name="robot_description" command="$(find xacro)/xacro $(find parallel_urdf)/urdf/parabot.urdf" />
+
+  <!-- Spawn a robot into Gazebo 在Gazebo中启动机器人，具体参数还不会对应-->
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" 
+     args="-urdf -model parabot -param robot_description -x 0 -y 0 -z 0.1" />
+
+  <!--start up the controller plug-ins via the controller manager 通过控制器管理器启动控制器插件-->
+  <!-- <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+    output="screen" ns="/jaka_Robot" args="joint_state_controller 
+    joint1_position_controller
+    joint2_position_controller
+    joint3_position_controller
+    joint4_position_controller
+    joint5_position_controller
+    joint6_position_controller
+   "/> -->
+
+   <!--
+    <node name="jaka_gazebo" pkg="gazebo_sim" type="jaka_gazebo" output="screen" /> 
+    -->
+
+
+</launch>
