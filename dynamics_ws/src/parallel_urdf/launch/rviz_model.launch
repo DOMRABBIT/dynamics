@@ -1,4 +1,8 @@
 <launch>
-    <param name="robot_description" textfile="$(find gazebo_sim)/urdf/a1.urdf" />
+    <param name="robot_description" textfile="$(find parallel_urdf)/urdf/parabot.urdf" />
     <node pkg="rviz" type="rviz" name="rviz" args="-d $(find visual_rviz)/config/visual_rviz.rviz" />
+
+    <node pkg = "joint_state_publisher_gui" type = "joint_state_publisher_gui" name = "joint_state_publisher_gui" /> 
+    <!--<node pkg = "joint_state_publisher" type = "joint_state_publisher" name = "joint_state_publisher" /> -->
+    <node pkg = "robot_state_publisher" type = "robot_state_publisher" name = "robot_state_publisher" />
 </launch>

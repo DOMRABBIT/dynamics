@@ -11,7 +11,7 @@
 
   <!-- Spawn a robot into Gazebo 在Gazebo中启动机器人，具体参数还不会对应-->
   <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" 
-     args="-urdf -model parabot -param robot_description -x 0 -y 0 -z 0.1" />
+     args="-urdf -model parabot -param robot_description -x 0 -y 0 -z 0.2" />
 
   <!--start up the controller plug-ins via the controller manager 通过控制器管理器启动控制器插件-->
   <!-- <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"

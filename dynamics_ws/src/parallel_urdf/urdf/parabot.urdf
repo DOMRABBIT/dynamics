@@ -1,19 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <robot name="parabot">
+
+  <link name="world"/>
+  <joint name="fixed" type="fixed">
+    <parent link="world"/>
+    <child link="base"/>
+  </joint>
 
   <link name="base">
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <box size="0.001 0.001 0.001"/>
+        <mesh
+          filename="package://parallel_urdf/meshes/base.STL" />
       </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 0.3" />
+      </material>
     </visual>
-  </link>
-
-  <link name="Slider_1">
-    <visual>
+    <!-- <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <box size="0.08 0.095 0.0365"/>
+        <mesh
+          filename="package://parallel_urdf/meshes/base.STL" />
+      </geometry>
+    </collision> -->
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.21966646 -2.724e-05 0.1267953"/>
+      <mass value="20.86456"/>
+      <inertia ixx="1.4885597" ixy="1.334e-05" ixz="-0.01316559" iyy="1.4676392" iyz="-0.0008014" izz="1.3275302"/>
+    </inertial>
+  </link>
+
+  <gazebo reference="base">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <self_collide>1</self_collide>
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+
+  <link name="upbar1">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+     <geometry>
+        <mesh
+          filename="package://parallel_urdf/meshes/upbar1.STL" />
       </geometry>
       <material name="">
         <color rgba="1 1 1 0.5" />
@@ -21,100 +55,489 @@
     </visual>
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
-      <geometry>
-        <box size="0.08 0.095 0.0365"/>
+       <geometry>
+        <mesh
+          filename="package://parallel_urdf/meshes/upbar1.STL" />
       </geometry>
     </collision>
     <inertial>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <mass value="0.696"/>
-      <inertia ixx="0.000469246" ixy="9.409e-06" ixz="-3.42e-07" iyy="0.00080749" iyz="4.66e-07" izz="0.000552929"/>
+      <origin rpy="0 0 0" xyz="0 0 -0.00882178"/>
+      <mass value="0.37810111"/>
+      <inertia ixx="0.00028467" ixy="0" ixz="0" iyy="0.00024402" iyz="0" izz="0.00038601"/>
     </inertial>
   </link>
 
-  <joint name="J1" type="continuous">
+  <joint name="Jointup_1" type="prismatic">
     <parent link="base" />
-    <child link="Slider_1" />
-    <origin xyz="0 0 0.0645" rpy="0 0 0" />
-    <axis xyz="0 0 1" />
+    <child link="upbar1" />
+    <origin xyz="0 0 0.371" rpy="0 0 0" />
+    <axis xyz="1 0 0" />
+    <dynamics damping = "0.01" friction="0.2"/>
+    <limit effort="10" lower="0.04" upper="0.3" velocity="0.1"/>
   </joint>
 
-  <gazebo reference="Slider_1">
-        <material>Gazebo/Black</material>
+  <gazebo reference="upbar1">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <self_collide>1</self_collide>
+    <material>Gazebo/Grey</material>
+    <kp value="1000000.0"/>
+    <kd value="1.0"/>
   </gazebo>
 
-  <gazebo reference="base">
-        <material>Gazebo/Black</material>
+  <link name="upbar2">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+     <geometry>
+        <mesh
+          filename="package://parallel_urdf/meshes/upbar2.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 0.5" />
+      </material>
+    </visual>
+    <!-- <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+       <geometry>
+        <mesh
+          filename="package://parallel_urdf/meshes/upbar2.STL" />
+      </geometry>
+    </collision> -->
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.00018008 0.00021347 0.00023533"/>
+      <mass value="0.4237848"/>
+      <inertia ixx="0.0002353" ixy="0" ixz="-1.31e-06" iyy="0.00021347" iyz="0" izz="0.00018011"/>
+    </inertial>
+  </link>
+
+  <joint name="Jointup_2" type="revolute">
+    <parent link="upbar1" />
+    <child link="upbar2" />
+    <origin xyz="0 0 -0.086" rpy="0 0 0" />
+    <axis xyz="0 0 1" />
+    <dynamics damping = "0.01" friction="0.2"/>
+    <limit effort="10" lower="-3" upper="3" velocity="0.1"/>
+  </joint>
+
+  <gazebo reference="upbar2">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <self_collide>1</self_collide>
+    <material>Gazebo/Grey</material>
+    <kp value="1000000.0"/>
+    <kd value="1.0"/>
   </gazebo>
-</robot>
 
+  <link name="upbar3">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+     <geometry>
+        <mesh
+          filename="package://parallel_urdf/meshes/upbar3.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 0.5" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+       <geometry>
+        <mesh
+          filename="package://parallel_urdf/meshes/upbar3.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 -0.1108811"/>
+      <mass value="2.6862309"/>
+      <inertia ixx="0.02470911" ixy="0" ixz="0" iyy="0.02326747" iyz="0" izz="0.00274059"/>
+    </inertial>
+  </link>
 
-<!-- 需求:设置机器人底盘,并添加摄像头 -->
-<robot name="mycar">
-    <!-- 1 底盘link -->
-    <link name="base_link">
-        <!-- 可视化标签 -->
-        <visual>
-            <!-- 形状 -->
-            <geometry>
-                <!-- 立方体 -->
-                <box size="0.3 0.2 0.1"/>
-            </geometry>
-            <!-- 偏移量与倾斜弧度 -->
-            <!-- xyz:设置分别在xyz上的偏移量
-            rpy用于设置xyz三个方向的旋转角 -->
-            <origin xyz='0 0 0' rpy='0 0 0'/>
+  <gazebo reference="upbar3">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <self_collide>1</self_collide>
+    <material>Gazebo/White</material>
+  </gazebo>
 
-            <!-- 颜色 -->
-            <!-- rgba:
-            rgb三原色,a透明度,四个值取值都在0到1之间 -->
-            <material name="car_color">
-                <color rgba = "0.3 0.4 0.8 0.8"/>
-            </material>
-        </visual>
-    </link>
+  <joint name="Jointup_3" type="revolute">
+    <parent link="upbar2" />
+    <child link="upbar3" />
+    <origin xyz="0 0 0" rpy="0 -1.19716352 0" />
+    <axis xyz="0 1 0" />
+    <dynamics damping = "0.01" friction="0.2"/>
+    <limit effort="10" lower="-3" upper="3" velocity="0.1"/>
+  </joint>
 
-    <!-- 2 摄像头link -->
-    <link name="camera">
-        <!-- 可视化标签 -->
-        <visual>
-            <!-- 形状 -->
-            <geometry>
-                <!-- 立方体 -->
-                <box size="0.03 0.05 0.05"/>
-            </geometry>
-            <!-- 偏移量与倾斜弧度 -->
-            <!-- xyz:设置分别在xyz上的偏移量
-            rpy用于设置xyz三个方向的旋转角 -->
-            <origin xyz='0 0 0.025' rpy='0 0 0'/>
-            <!-- 需要上移半个摄像头的高度,才不会导致摄像头内嵌在机器人车体里 -->
-            <!-- 颜色 -->
-            <!-- rgba:
-            rgb三原色,a透明度,四个值取值都在0到1之间 -->
-            <material name="car_color">
-                <color rgba = "0 1 0 0.8"/>
-            </material>
-        </visual>
-    </link>
-    <!-- 3 关节 -->
-    <joint name="camera_to_link" type="continuous">
-        <!-- 父级link -->
-        <parent link="base_link"/>
-        <!-- 子级link -->
-        <child link="camera"/>
-        <!-- 设置偏移量 -->
-        <origin xyz='0.13 0 0.05' rpy='0 0 0'/>
-        <!-- 设置关节旋转参考的坐标轴 -->
-        <axis xyz='0 0 1'/>
+  <link name="upbar4">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+     <geometry>
+        <mesh
+          filename="package://parallel_urdf/meshes/upbar4.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 0.5" />
+      </material>
+    </visual>
+    <!-- <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+       <geometry>
+        <mesh
+          filename="package://parallel_urdf/meshes/upbar4.STL" />
+      </geometry>
+    </collision> -->
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.00150775 0.00010572 -0.0430694"/>
+      <mass value="1.5499672"/>
+      <inertia ixx="0.00507211" ixy="6.6e-07" ixz="0.00010033" iyy="0.00363491" iyz="-1.882e-05" izz="0.00220974"/>
+    </inertial>
+  </link>
+
+  <gazebo reference="upbar4">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <self_collide>1</self_collide>
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <joint name="Jointup_4" type="revolute">
+    <parent link="upbar3" />
+    <child link="upbar4" />
+    <origin xyz="0 0 -0.3" rpy="0 1.1971635 0" />
+    <axis xyz="0 1 0" />
+    <dynamics damping = "0.01" friction="0.2"/>
+    <limit effort="10" lower="-3" upper="3" velocity="0.1"/>
+  </joint>
+
+  <link name="tool">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+     <geometry>
+        <mesh
+          filename="package://parallel_urdf/meshes/tool.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 0.5" />
+      </material>
+    </visual>
+    <!-- <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+       <geometry>
+        <mesh
+          filename="package://parallel_urdf/meshes/tool.STL" />
+      </geometry>
+    </collision> -->
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.04660746 0 -0.0016316"/>
+      <mass value="0.70468795"/>
+      <inertia ixx="0.00036431" ixy="0" ixz="-8.992e-05" iyy="0.00293278" iyz="0" izz="0.00292963"/>
+    </inertial>
+  </link>
+
+  <joint name="tool_fixed" type="fixed">
+    <parent link="upbar4" />
+    <child link="tool" />
+    <origin xyz="0 0 -0.07322" rpy="0 0 0" />
+    <axis xyz="1 0 0" />
+  </joint>
+
+  <gazebo reference="tool">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <self_collide>1</self_collide>
+    <material>Gazebo/Orange</material>
+  </gazebo>
+
+  <link name="leftbar1">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+     <geometry>
+        <mesh
+          filename="package://parallel_urdf/meshes/leftbar1.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 0.5" />
+      </material>
+    </visual>
+    <!-- <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+       <geometry>
+        <mesh
+          filename="package://parallel_urdf/meshes/leftbar1.STL" />
+      </geometry>
+    </collision> -->
+    <inertial>
+      <origin rpy="0 0 0" xyz="1.611e-05 0 0.02629524"/>
+      <mass value="0.48906947"/>
+      <inertia ixx="0.0008291" ixy="-2e-08" ixz="1.6e-07" iyy="0.00074562" iyz="0" izz="0.00039494"/>
+    </inertial>
+  </link>
+
+  <joint name="Jointleft_1" type="prismatic">
+    <parent link="base" />
+    <child link="leftbar1" />
+    <origin xyz="0 -0.2 0" rpy="0 0 0" />
+    <axis xyz="1 0 0" />
+    <dynamics damping = "0.01" friction="0.2"/>
+    <limit effort="10" lower="0.04" upper="0.3" velocity="0.1"/>
+  </joint>
+
+  <gazebo reference="leftbar1">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <self_collide>1</self_collide>
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <link name="leftbar2">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+     <geometry>
+        <mesh
+          filename="package://parallel_urdf/meshes/leftbar2.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 0.5" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+       <geometry>
+        <mesh
+          filename="package://parallel_urdf/meshes/leftbar2.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.1108811 0 0.07811728"/>
+      <mass value="2.6862309"/>
+      <inertia ixx="0.00265916" ixy="0" ixz="3.493e-05" iyy="0.02462768" iyz="0" izz="0.02326747"/>
+    </inertial>
+  </link>
+
+  <gazebo reference="leftbar2">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <self_collide>1</self_collide>
+    <material>Gazebo/White</material>
+  </gazebo>
+
+  <joint name="Jointleft_2" type="revolute">
+    <parent link="leftbar1" />
+    <child link="leftbar2" />
+    <origin xyz="0 0 0.078" rpy="0 0 0.3398015" />
+    <axis xyz="0 0 1" />
+    <dynamics damping = "0.01" friction="0.2"/>
+    <limit effort="10" lower="-3" upper="3" velocity="0.1"/>
+  </joint>
+
+  <link name="leftbar3">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+     <geometry>
+        <mesh
+          filename="package://parallel_urdf/meshes/leftbar3.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 0.5" />
+      </material>
+    </visual>
+    <!-- <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+       <geometry>
+        <mesh
+          filename="package://parallel_urdf/meshes/leftbar3.STL" />
+      </geometry>
+    </collision> -->
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.00477408 0 -0.00227445"/>
+      <mass value="0.75354561"/>
+      <inertia ixx="0.00084704" ixy="0" ixz="8.1e-07" iyy="0.00091934" iyz="0" izz="0.00047609"/>
+    </inertial>
+  </link>
+
+  <gazebo reference="leftbar3">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <self_collide>1</self_collide>
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <joint name="Jointleft_3" type="revolute">
+    <parent link="leftbar2" />
+    <child link="leftbar3" />
+    <origin xyz="0.3 0 0" rpy="0 0 1.2309594" />
+    <axis xyz="0 0 1" />
+    <dynamics damping = "0.01" friction="0.2"/>
+    <limit effort="10" lower="-3" upper="3" velocity="0.1"/>
+  </joint>
+
+  <gazebo>
+    <joint name="Jointleft_4" type="revolute">
+      <pose relative_to ="leftbar3">0.1 0 0 0 0 0</pose>
+      <parent>leftbar3 </parent>
+      <child>upbar4</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <lower>-3.14</lower>
+          <upper>3.14</upper>
+          <effort>20</effort>
+          <velocity>30</velocity>
+        </limit>
+      </axis>
+      <dynamic>
+        <friction>0.01</friction>
+        <damping>0.01</damping>
+      </dynamic>
     </joint>
-
-    <gazebo reference="base_link">
-        <material>Gazebo/Black</material>
   </gazebo>
 
-  <gazebo reference="camera">
-        <material>Gazebo/Black</material>
+  <link name="rightbar1">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+     <geometry>
+        <mesh
+          filename="package://parallel_urdf/meshes/rightbar1.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 0.5" />
+      </material>
+    </visual>
+    <!-- <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+       <geometry>
+        <mesh
+          filename="package://parallel_urdf/meshes/rightbar1.STL" />
+      </geometry>
+    </collision> -->
+    <inertial>
+      <origin rpy="0 0 0" xyz="1.611e-05 0 0.02591607"/>
+      <mass value="0.48906947"/>
+      <inertia ixx="0.0008123" ixy="2e-08" ixz="1.6e-07" iyy="0.00072885" iyz="0" izz="0.00039494"/>
+    </inertial>
+  </link>
+
+  <joint name="Jointright_1" type="prismatic">
+    <parent link="base" />
+    <child link="rightbar1" />
+    <origin xyz="0 0.2 0" rpy="0 0 0" />
+    <axis xyz="1 0 0" />
+    <dynamics damping = "0.01" friction="0.2"/>
+    <limit effort="10" lower="0.04" upper="0.3" velocity="0.1"/>
+  </joint>
+
+  <gazebo reference="rightbar1">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <self_collide>1</self_collide>
+    <material>Gazebo/Grey</material>
   </gazebo>
+
+
+  <link name="rightbar2">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+     <geometry>
+        <mesh
+          filename="package://parallel_urdf/meshes/rightbar2.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 0.5" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+       <geometry>
+        <mesh
+          filename="package://parallel_urdf/meshes/rightbar2.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.1108811 0 0.00011728"/>
+      <mass value="2.6862309"/>
+      <inertia ixx="0.00265916" ixy="0" ixz="3.493e-05" iyy="0.02462768" iyz="0" izz="0.02326747"/>
+    </inertial>
+  </link>
+
+  <gazebo reference="rightbar2">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <self_collide>1</self_collide>
+    <material>Gazebo/White</material>
+  </gazebo>
+
+  <joint name="Jointright_2" type="revolute">
+    <parent link="rightbar1" />
+    <child link="rightbar2" />
+    <origin xyz="0 0 0.078" rpy="0 0 -0.3398015" />
+    <axis xyz="0 0 1" />
+    <dynamics damping = "0.01" friction="0.2"/>
+    <limit effort="10" lower="-3" upper="3" velocity="0.1"/>
+  </joint>
+
+  <link name="rightbar3">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+     <geometry>
+        <mesh
+          filename="package://parallel_urdf/meshes/rightbar3.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 0.5" />
+      </material>
+    </visual>
+    <!-- <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+       <geometry>
+        <mesh
+          filename="package://parallel_urdf/meshes/rightbar3.STL" />
+      </geometry>
+    </collision> -->
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.00477408 0 -0.00272555"/>
+      <mass value="0.75354561"/>
+      <inertia ixx="0.00084704" ixy="0" ixz="-8.1e-07" iyy="0.00091934" iyz="0" izz="0.00047609"/>
+    </inertial>
+  </link>
+
+  <gazebo reference="rightbar3">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <self_collide>1</self_collide>
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <joint name="Jointright_3" type="revolute">
+    <parent link="rightbar2" />
+    <child link="rightbar3" />
+    <origin xyz="0.3 0 0" rpy="0 0 -1.2309594" />
+    <axis xyz="0 0 1" />
+    <dynamics damping = "0.01" friction="0.2"/>
+    <limit effort="10" lower="-3" upper="3" velocity="0.1"/>
+  </joint>
+
+  <gazebo>
+    <joint name="Jointright_4" type="revolute">
+      <pose relative_to ="rightbar3">0.1 0 0 0 0 0</pose>
+      <parent>rightbar3 </parent>
+      <child>upbar4</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <lower>-3.14</lower>
+          <upper>3.14</upper>
+          <effort>20</effort>
+          <velocity>30</velocity>
+        </limit>
+      </axis>
+      <dynamic>
+        <friction>0.01</friction>
+        <damping>0.01</damping>
+      </dynamic>
+    </joint>
+  </gazebo>
+  
+ 
+
 </robot>
-
-
