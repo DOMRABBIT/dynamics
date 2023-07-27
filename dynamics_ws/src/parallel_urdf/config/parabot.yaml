@@ -1,0 +1,38 @@
+parabot:
+    # Publish all joint states -----------------------------------
+    joint_state_controller:
+        type: joint_state_controller/JointStateController
+        publish_rate: 1000
+
+    # Position Controllers ---------------------------------------
+    Jointup_controller:
+        type: effort_controllers/JointPositionController
+        joint: Jointup_1
+        pid: {p: 300.0, i: 0.0, d: 5.0, i_clamp: 100}
+
+    Jointleft_controller:
+        type: effort_controllers/JointPositionController
+        joint: Jointleft_1
+        pid: {p: 300.0, i: 0.0, d: 8.0,i_clamp: 100}
+
+    Jointright_controller:
+        type: effort_controllers/JointPositionController
+        joint: Jointright_1
+        pid: {p: 300.0, i: 0.0, d: 8.0,i_clamp: 100}
+
+    # Effort Controllers ---------------------------------------
+    Jointup_controller_effort:
+        type: effort_controllers/JointEffortController
+        joint: Jointup_1
+        pid: {p: 100.0, i: 0.0, d: 5.0}
+
+    Jointleft_controller_effort:
+        type: effort_controllers/JointEffortController
+        joint: Jointleft_1
+        pid: {p: 300.0, i: 0.0, d: 8.0}
+
+    Jointright_controller_effort:
+        type: effort_controllers/JointEffortController
+        joint: Jointright_1
+        pid: {p: 300.0, i: 0.0, d: 8.0}
+

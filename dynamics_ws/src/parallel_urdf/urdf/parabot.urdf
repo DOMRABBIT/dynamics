@@ -2,9 +2,32 @@
 
 <robot name="parabot">
 
+<!-- ros_control plugin -->
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so" >
+      <robotNamespace>/parabot</robotNamespace>
+      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+    </plugin>
+  </gazebo>
+
   <link name="world"/>
   <joint name="fixed" type="fixed">
     <parent link="world"/>
+    <child link="base_move"/>
+  </joint>
+
+  <link name="base_move">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.001 0.001 0.001"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="floating_base" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <parent link="base_move"/>
     <child link="base"/>
   </joint>
 
@@ -73,7 +96,7 @@
     <origin xyz="0 0 0.371" rpy="0 0 0" />
     <axis xyz="1 0 0" />
     <dynamics damping = "0.01" friction="0.2"/>
-    <limit effort="10" lower="0.04" upper="0.3" velocity="0.1"/>
+    <limit effort="100" lower="0.04" upper="0.3" velocity="21"/>
   </joint>
 
   <gazebo reference="upbar1">
@@ -84,6 +107,17 @@
     <kp value="1000000.0"/>
     <kd value="1.0"/>
   </gazebo>
+
+  <transmission name="up_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="Jointup_1">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="Jointup_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
 
   <link name="upbar2">
     <visual>
@@ -207,7 +241,7 @@
     <origin xyz="0 0 -0.3" rpy="0 1.1971635 0" />
     <axis xyz="0 1 0" />
     <dynamics damping = "0.01" friction="0.2"/>
-    <limit effort="10" lower="-3" upper="3" velocity="0.1"/>
+    <limit effort="10" lower="-0.9" upper="3" velocity="0.1"/>
   </joint>
 
   <link name="tool">
@@ -280,7 +314,7 @@
     <origin xyz="0 -0.2 0" rpy="0 0 0" />
     <axis xyz="1 0 0" />
     <dynamics damping = "0.01" friction="0.2"/>
-    <limit effort="10" lower="0.04" upper="0.3" velocity="0.1"/>
+    <limit effort="100" lower="0.04" upper="0.3" velocity="21"/>
   </joint>
 
   <gazebo reference="leftbar1">
@@ -289,6 +323,17 @@
     <self_collide>1</self_collide>
     <material>Gazebo/Grey</material>
   </gazebo>
+
+  <transmission name="left_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="Jointleft_1">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="Jointleft_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
 
   <link name="leftbar2">
     <visual>
@@ -424,7 +469,7 @@
     <origin xyz="0 0.2 0" rpy="0 0 0" />
     <axis xyz="1 0 0" />
     <dynamics damping = "0.01" friction="0.2"/>
-    <limit effort="10" lower="0.04" upper="0.3" velocity="0.1"/>
+    <limit effort="100" lower="0.04" upper="0.3" velocity="21"/>
   </joint>
 
   <gazebo reference="rightbar1">
@@ -433,6 +478,17 @@
     <self_collide>1</self_collide>
     <material>Gazebo/Grey</material>
   </gazebo>
+
+  <transmission name="right_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="Jointright_1">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="Jointright_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
 
 
   <link name="rightbar2">
@@ -537,6 +593,19 @@
       </dynamic>
     </joint>
   </gazebo>
+
+  <!-- Show the trajectory of the end of tool. -->
+  <!-- <gazebo>
+    <plugin filename="libLinkPlot3DPlugin.so" name="3dplot">
+      <frequency>1000</frequency>
+      <plot>
+        <link>tool</link>
+        <pose>0.15 0 0 0 0 0</pose>
+        <material>Gazebo/Red</material>
+      </plot>
+    </plugin>
+  </gazebo> -->
+
   
  
 

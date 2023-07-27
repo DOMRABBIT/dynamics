@@ -62,7 +62,7 @@
     </plugin>
   </gazebo>
   <!-- Show the trajectory of foot. You can add another trajectory about another foot. -->
-  <!-- <gazebo>
+  <gazebo>
     <plugin filename="libLinkPlot3DPlugin.so" name="3dplot">
       <frequency>1000</frequency>
       <plot>
@@ -71,7 +71,7 @@
         <material>Gazebo/Yellow</material>
       </plot>
     </plugin>
-  </gazebo> -->
+  </gazebo>
   <gazebo>
     <plugin filename="libgazebo_ros_force.so" name="gazebo_ros_force">
       <bodyName>trunk</bodyName>
